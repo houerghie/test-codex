@@ -9,17 +9,15 @@ const schema = z.object({
   remember: z.boolean().optional(),
 });
 
-type FormData = z.infer<typeof schema>;
-
 export default function CustomerLogin() {
   const { login } = useAuth();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>({ resolver: zodResolver(schema) });
+  } = useForm({ resolver: zodResolver(schema) });
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data) => {
     await login(data.email, data.password);
   };
 

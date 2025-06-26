@@ -1,6 +1,6 @@
 # Restaurant Delivery App
 
-This is a sample full-stack restaurant delivery web application built with Next.js, TypeScript, Tailwind CSS, and Firebase.
+This is a sample full-stack restaurant delivery web application built with Next.js, JavaScript, Tailwind CSS, and Firebase.
 
 ## Features
 - Landing page with role-based login

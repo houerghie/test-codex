@@ -12,22 +12,10 @@ import {
 import { doc, getDoc } from 'firebase/firestore';
 import { app, db } from '../firebase/client';
 
-interface AuthContextProps {
-  user: any;
-  role: string | null;
-  loading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  signup: (email: string, password: string) => Promise<void>;
-  logout: () => Promise<void>;
-  resetPassword: (email: string) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
-}
-
-const AuthContext = createContext<AuthContextProps | undefined>(undefined);
-
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = useState<any>(null);
-  const [role, setRole] = useState<string | null>(null);
+const AuthContext = createContext(undefined);
+export const AuthProvider = ({ children }) => {
+  const [user, setUser] = useState(null);
+  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(true);
   const auth = getAuth(app);
 
@@ -37,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (firebaseUser) {
         const docRef = doc(db, 'users', firebaseUser.uid);
         const snap = await getDoc(docRef);
-        setRole(snap.exists() ? (snap.data() as any).role : null);
+        setRole(snap.exists() ? snap.data().role : null);
       } else {
         setRole(null);
       }
@@ -46,16 +34,16 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return unsubscribe;
   }, [auth]);
 
-  const login = async (email: string, password: string) => {
+  const login = async (email, password) => {
     await signInWithEmailAndPassword(auth, email, password);
   };
-  const signup = async (email: string, password: string) => {
+  const signup = async (email, password) => {
     await createUserWithEmailAndPassword(auth, email, password);
   };
   const logout = async () => {
     await signOut(auth);
   };
-  const resetPassword = async (email: string) => {
+  const resetPassword = async (email) => {
     await sendPasswordResetEmail(auth, email);
   };
   const loginWithGoogle = async () => {
